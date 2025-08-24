@@ -1,8 +1,7 @@
-
 CC = gcc
 CFLAGS = -Wall -Wextra -O2
 LDFLAGS = -lncurses
-TARGET = main
+TARGET = cefeo
 SRC = main.c
 
 all: $(TARGET)
@@ -12,3 +11,6 @@ $(TARGET): $(SRC)
 
 clean:
 	rm -f $(TARGET)
+
+#debug:
+	# i need add a version os this programm to debug it or more clearly a convinient way to debug.
