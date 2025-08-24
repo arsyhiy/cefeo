@@ -9,8 +9,11 @@ all: $(TARGET)
 $(TARGET): $(SRC)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRC) $(LDFLAGS)
 
+terminal_unicode:
+	gcc -Wall -Wextra -O2 -o cefeo main_unicode.c -I/usr/include/lua5.3 -lncursesw -llua5.3 -lm
+
 clean:
-	rm -f $(TARGET) $(GUI)
+	rm -f $(TARGET) $(GUI) main_unicode 
 
 gui:
 	gcc simple_editor_gui.c -o gui-editor `pkg-config --cflags --libs gtksourceview-4`                                    

@@ -17,3 +17,8 @@ sudo apt update
 sudo apt install -y build-essential pkg-config libncurses-dev
 
 echo "Зависимости установлены."
+
+
+
+sudo apt update
+sudo apt install liblua5.3-dev

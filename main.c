@@ -1,3 +1,4 @@
+
 #include <ncurses.h>
 #include <stdlib.h>
 #include <string.h>
@@ -190,4 +191,3 @@ int main(int argc, char *argv[]) {
     endwin();
     return 0;
 }
-
