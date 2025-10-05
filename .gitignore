@@ -2,6 +2,17 @@
 # Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
 ################################################################################
 
-/.cache/clangd/index
 /.vs
 /.vscode
+/build/bin/Debug
+/build/cefeo_core.dir/Debug
+/build/cefeo_win.dir/Debug
+/build/CMakeFiles
+/build/Debug
+/build/imgui.dir/Debug
+/build/lib/Debug
+/build/x64/Debug
+*.vcxproj
+*.filters
+*.sln
+/build/cmake_install.cmake
