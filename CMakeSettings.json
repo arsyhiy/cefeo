@@ -1,0 +1,52 @@
+{
+  "configurations": [
+    {
+      "name": "x64-Debug-Windows",
+      "generator": "Visual Studio 17 2022",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [],
+      "startupProject": "cefeo_win"
+    },
+    {
+      "name": "x64-Release-Windows",
+      "generator": "Visual Studio 17 2022",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [],
+      "startupProject": "cefeo_win"
+    },
+    {
+      "name": "x64-Debug-Linux",
+      "generator": "Ninja",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=toolchains/linux.cmake",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [],
+      "startupProject": "cefeo_linux"
+    },
+    {
+      "name": "x64-Release-Linux",
+      "generator": "Ninja",
+      "configurationType": "Release",
+      "buildRoot": "${projectDir}\\build\\${name}",
+      "installRoot": "${projectDir}\\install\\${name}",
+      "cmakeCommandArgs": "-DCMAKE_TOOLCHAIN_FILE=toolchains/linux.cmake",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "variables": [],
+      "startupProject": "cefeo_linux"
+    }
+  ]
+}
