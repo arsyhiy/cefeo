@@ -1,18 +1,13 @@
-//windows api
 #include <windows.h>
 #include <d3d11.h>
-
 #include <iostream>
-
-// the core of this editor
+#include <fstream>
 #include "buffer.h"
-
-// imgui library
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
 
-// DirectX объекты
+// DirectX objects
 ID3D11Device* g_pd3dDevice = nullptr;
 ID3D11DeviceContext* g_pd3dDeviceContext = nullptr;
 IDXGISwapChain* g_pSwapChain = nullptr;
@@ -26,15 +21,21 @@ void CreateRenderTarget() {
 }
 
 void CleanupRenderTarget() {
-    if (g_mainRenderTargetView) { g_mainRenderTargetView->Release(); g_mainRenderTargetView = nullptr; }
+    if (g_mainRenderTargetView) {
+        g_mainRenderTargetView->Release();
+        g_mainRenderTargetView = nullptr;
+    }
 }
 
 Editor* editor = nullptr;
+HWND hwnd = nullptr; // Declare hwnd globally
 
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
-    if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam)) return true;
+    if (ImGui_ImplWin32_WndProcHandler(hWnd, msg, wParam, lParam))
+        return true;
+
     switch (msg) {
     case WM_SIZE:
         if (g_pd3dDevice != nullptr && wParam != SIZE_MINIMIZED) {
@@ -50,17 +51,87 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }
 
+void openFile(Editor* editor) {
+    OPENFILENAME ofn;
+    char szFile[260];
+
+    // File open dialog setup
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = hwnd;
+    ofn.lpstrFile = szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    ofn.lpstrFilter = "Text files\0*.TXT\0All files\0*.*\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile[0] = '\0';
+    ofn.lpstrInitialDir = NULL;
+    ofn.lpstrTitle = "Open File";
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+    if (GetOpenFileName(&ofn) == TRUE) {
+        FILE* file = fopen(ofn.lpstrFile, "r");
+        if (file == nullptr) {
+            std::cerr << "Failed to open file!" << std::endl;
+            return;
+        }
+
+        fseek(file, 0, SEEK_END);
+        long fileSize = ftell(file);
+        fseek(file, 0, SEEK_SET);
+
+        // Initialize buffer
+        editor->buffer.data = (char*)realloc(editor->buffer.data, fileSize + 1);
+        if (editor->buffer.data == nullptr) {
+            std::cerr << "Memory allocation failed!" << std::endl;
+            fclose(file);
+            return;
+        }
+
+        fread(editor->buffer.data, 1, fileSize, file);
+        editor->buffer.data[fileSize] = '\0';
+        editor->buffer.size = fileSize;
+        fclose(file);
+    }
+}
+
+void saveFile(Editor* editor) {
+    OPENFILENAME ofn;
+    char szFile[260];
+
+    // File save dialog setup
+    ZeroMemory(&ofn, sizeof(ofn));
+    ofn.lStructSize = sizeof(ofn);
+    ofn.hwndOwner = hwnd;
+    ofn.lpstrFile = szFile;
+    ofn.nMaxFile = sizeof(szFile);
+    ofn.lpstrFilter = "Text files\0*.TXT\0All files\0*.*\0";
+    ofn.nFilterIndex = 1;
+    ofn.lpstrFile[0] = '\0';
+    ofn.lpstrTitle = "Save File";
+    ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST | OFN_OVERWRITEPROMPT;
+
+    if (GetSaveFileName(&ofn) == TRUE) {
+        FILE* file = fopen(ofn.lpstrFile, "w");
+        if (file == nullptr) {
+            std::cerr << "Failed to open file for saving!" << std::endl;
+            return;
+        }
+
+        fwrite(editor->buffer.data, 1, editor->buffer.size, file);
+        fclose(file);
+    }
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
-    // Создание окна
+    // Create window
     WNDCLASSEX wc = { sizeof(WNDCLASSEX), CS_CLASSDC, WndProc, 0, 0,
                       GetModuleHandle(nullptr), nullptr, nullptr, nullptr, nullptr,
                       "Cefeo", nullptr };
     RegisterClassEx(&wc);
-    HWND hwnd = CreateWindow(wc.lpszClassName, "Cefeo Editor",
-        WS_OVERLAPPEDWINDOW, 100, 100, 1280, 720,
+    hwnd = CreateWindow(wc.lpszClassName, "Cefeo Editor", WS_OVERLAPPEDWINDOW, 100, 100, 1280, 720,
         nullptr, nullptr, wc.hInstance, nullptr);
 
-    // DirectX 11
+    // DirectX 11 setup
     DXGI_SWAP_CHAIN_DESC scd = {};
     scd.BufferCount = 1;
     scd.BufferDesc.Width = 1280;
@@ -73,32 +144,29 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
     D3D11CreateDeviceAndSwapChain(nullptr, D3D_DRIVER_TYPE_HARDWARE, nullptr, 0,
         nullptr, 0, D3D11_SDK_VERSION,
-        &scd, &g_pSwapChain, &g_pd3dDevice, nullptr,
-        &g_pd3dDeviceContext);
+        &scd, &g_pSwapChain, &g_pd3dDevice, nullptr, &g_pd3dDeviceContext);
 
     CreateRenderTarget();
 
-    // ImGui
+    // ImGui setup
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO(); (void)io;
-
     ImGui_ImplWin32_Init(hwnd);
     ImGui_ImplDX11_Init(g_pd3dDevice, g_pd3dDeviceContext);
 
     ShowWindow(hwnd, SW_SHOWDEFAULT);
     UpdateWindow(hwnd);
 
-    // Создаём редактор
-
+    // Create editor
     editor = new Editor();
     if (editor == nullptr) {
         std::cout << "Editor initialization failed!" << std::endl;
-        return -1;  // Прерывание работы программы
+        return -1;
     }
     initEditor(editor);
 
-    // Основной цикл
+    // Main loop
     MSG msg;
     bool done = false;
     while (!done) {
@@ -112,17 +180,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
-        // Рендеринг редактора
+        // Rendering editor
         ImGui::Begin("Cefeo Editor");
+
+        if (ImGui::Button("Open File")) {
+            openFile(editor);
+        }
+
+        if (ImGui::Button("Save File")) {
+            saveFile(editor);
+        }
+
         if (editor != nullptr && editor->buffer.data != nullptr) {
             ImGui::InputTextMultiline("##editor", editor->buffer.data, editor->buffer.size, ImVec2(-FLT_MIN, -FLT_MIN));
         }
         else {
             std::cout << "Null pointer detected!" << std::endl;
         }
+
         ImGui::End();
 
-        // Рендер
+        // Render
         ImGui::Render();
         const float clear_color[4] = { 0.45f, 0.55f, 0.60f, 1.00f };
         g_pd3dDeviceContext->OMSetRenderTargets(1, &g_mainRenderTargetView, nullptr);
@@ -132,7 +210,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
         g_pSwapChain->Present(1, 0);
     }
 
-    // Очистка
+    // Cleanup
     freeEditor(editor);
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();

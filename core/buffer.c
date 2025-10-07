@@ -6,18 +6,58 @@
 #include "buffer.h"
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>  // Для использования snprintf
+#include <stdio.h>
 
 // Инициализация редактора
 void initEditor(Editor* editor) {
-    // Allocate memory for the buffer and initialize it
-    editor->buffer.size = 1024;  // Set a default size for the buffer
-    editor->buffer.data = (char*)malloc(editor->buffer.size);  // Allocate memory for the buffer
+    editor->buffer.size = 1024;
+    editor->buffer.data = (char*)malloc(editor->buffer.size);
     if (editor->buffer.data == NULL) {
         printf("Failed to allocate buffer memory!\n");
-        return;  // Handle memory allocation failure
+        return;
     }
-    memset(editor->buffer.data, 0, editor->buffer.size);  // Initialize the buffer with zeroes
+    memset(editor->buffer.data, 0, editor->buffer.size);
+}
+
+// Открытие файла
+int openFile(Editor* editor, const char* filename) {
+    FILE* file = fopen(filename, "r");
+    if (file == NULL) {
+        printf("Failed to open file: %s\n", filename);
+        return 0;  // Ошибка открытия файла
+    }
+
+    fseek(file, 0, SEEK_END);
+    long fileSize = ftell(file);
+    fseek(file, 0, SEEK_SET);
+
+    // Перераспределение памяти для данных файла
+    editor->buffer.data = (char*)realloc(editor->buffer.data, fileSize + 1);
+    if (editor->buffer.data == NULL) {
+        printf("Memory allocation failed while reading file!\n");
+        fclose(file);
+        return 0;
+    }
+
+    fread(editor->buffer.data, 1, fileSize, file);
+    editor->buffer.data[fileSize] = '\0';  // Завершающий нулевой символ
+    editor->buffer.size = fileSize;
+
+    fclose(file);
+    return 1;  // Успех
+}
+
+// Сохранение файла
+int saveFile(Editor* editor, const char* filename) {
+    FILE* file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Failed to open file for saving: %s\n", filename);
+        return 0;  // Ошибка открытия файла
+    }
+
+    fwrite(editor->buffer.data, 1, editor->buffer.size, file);
+    fclose(file);
+    return 1;  // Успех
 }
 
 // Освобождение редактора
@@ -32,21 +72,19 @@ void initBuffer(Buffer* buffer) {
         printf("Memory allocation failed!\n");
         return;
     }
-    printf("Memory allocated, address: %p\n", buffer->data);
-
-    // Заполнение памяти нулями
     memset(buffer->data, 0, 1024);
-
-    buffer->size = 0;  // Инициализация размера буфера
-
-    // Завершающий нулевой символ
-    buffer->data[0] = '\0';  // Гарантируем, что строка начинается с нулевого символа
+    buffer->size = 0;
+    buffer->data[0] = '\0';
 }
 
 // Освобождение буфера
 void freeBuffer(Buffer* buffer) {
-    free(buffer->data);
+    if (buffer->data != NULL) {
+        free(buffer->data);
+        buffer->data = NULL;
+    }
 }
+
 
 
 

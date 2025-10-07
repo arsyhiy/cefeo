@@ -24,9 +24,10 @@ extern "C" {
     // } Editor;
 
     typedef struct editor {
-        Buffer buffer; 
+        Buffer buffer;
+        char filePath[260];  // Используем массив для пути
+    } Editor;
 
-    }Editor;
 
     // Functions 
     void initEditor(Editor *editor); // i need to find the difference between an editor and a buffer.
