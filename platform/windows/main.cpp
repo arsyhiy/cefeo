@@ -2,8 +2,10 @@
 #include <windows.h>
 #include <d3d11.h>
 
+#include <iostream>
+
 // the core of this editor
-#include "core.h"
+#include "buffer.h"
 
 // imgui library
 #include "imgui.h"
@@ -27,7 +29,7 @@ void CleanupRenderTarget() {
     if (g_mainRenderTargetView) { g_mainRenderTargetView->Release(); g_mainRenderTargetView = nullptr; }
 }
 
-editor_t* editor = nullptr;
+Editor* editor = nullptr;
 
 // Win32 message handler
 extern LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -88,7 +90,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
     UpdateWindow(hwnd);
 
     // Создаём редактор
-    editor = editor_create();
+
+    editor = new Editor();
+    if (editor == nullptr) {
+        std::cout << "Editor initialization failed!" << std::endl;
+        return -1;  // Прерывание работы программы
+    }
+    initEditor(editor);
 
     // Основной цикл
     MSG msg;
@@ -106,8 +114,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
         // Рендеринг редактора
         ImGui::Begin("Cefeo Editor");
-        ImGui::InputTextMultiline("##editor", editor->buffer, sizeof(editor->buffer),
-            ImVec2(-FLT_MIN, -FLT_MIN));
+        if (editor != nullptr && editor->buffer.data != nullptr) {
+            ImGui::InputTextMultiline("##editor", editor->buffer.data, editor->buffer.size, ImVec2(-FLT_MIN, -FLT_MIN));
+        }
+        else {
+            std::cout << "Null pointer detected!" << std::endl;
+        }
         ImGui::End();
 
         // Рендер
@@ -121,7 +133,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
     }
 
     // Очистка
-    editor_destroy(editor);
+    freeEditor(editor);
     ImGui_ImplDX11_Shutdown();
     ImGui_ImplWin32_Shutdown();
     ImGui::DestroyContext();
@@ -134,4 +146,3 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
 
     return 0;
 }
-
