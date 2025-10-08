@@ -8,7 +8,11 @@ set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 # ======================================
 # Core of this editor
 # ======================================
-add_library(cefeo_core core/buffer.c)
+add_library(cefeo_core 
+    core/buffer.c
+    core/editor.c
+    core/file.c
+    core/core.c)
 target_include_directories(cefeo_core PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/core)
 
 # ======================================
