@@ -2,7 +2,7 @@
 #include <d3d11.h>
 #include <iostream>
 #include <fstream>
-#include "buffer.h"
+#include "editor.h"
 #include "imgui.h"
 #include "imgui_impl_win32.h"
 #include "imgui_impl_dx11.h"
@@ -50,6 +50,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }
+
+
+
+
 
 void openFile(Editor* editor) {
     OPENFILENAME ofn;
@@ -121,6 +125,10 @@ void saveFile(Editor* editor) {
         fclose(file);
     }
 }
+
+
+
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int) {
     // Create window
