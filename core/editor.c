@@ -7,7 +7,7 @@
 #include <stdlib.h>
 
 void initEditor(Editor* editor) {
-    editor->buffer.size = 1024; // надо будет переписать как 8кб
+    editor->buffer.size = 8192; // надо будет переписать как 8кб
     editor->buffer.data = (char*)malloc(editor->buffer.size);
     if (editor->buffer.data == NULL) {
         printf("Failed to allocate buffer memory!\n");

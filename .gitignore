@@ -16,3 +16,7 @@
 *.filters
 *.sln
 /build/cmake_install.cmake
+.cache/clangd/index
+build/x64-Debug-Windows
+build/CMakeCache.txt
+build/build.ninja

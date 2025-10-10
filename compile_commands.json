@@ -1,0 +1,50 @@
+[
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\cc.exe -IC:/Users/arsyh/Desktop/cefeo/core -o CMakeFiles\\cefeo_core.dir\\core\\buffer.c.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\core\\buffer.c",
+  "file": "C:/Users/arsyh/Desktop/cefeo/core/buffer.c",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/cefeo_core.dir/core/buffer.c.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\imgui.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\imgui.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/imgui.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/imgui.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\imgui_draw.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\imgui_draw.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/imgui_draw.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/imgui_draw.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\imgui_widgets.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\imgui_widgets.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/imgui_widgets.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/imgui_widgets.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\imgui_tables.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\imgui_tables.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/imgui_tables.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/imgui_tables.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\backends\\imgui_impl_win32.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\backends\\imgui_impl_win32.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/backends/imgui_impl_win32.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/backends/imgui_impl_win32.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\imgui.dir\\lib\\imgui\\backends\\imgui_impl_dx11.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\lib\\imgui\\backends\\imgui_impl_dx11.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/lib/imgui/backends/imgui_impl_dx11.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/imgui.dir/lib/imgui/backends/imgui_impl_dx11.cpp.obj"
+},
+{
+  "directory": "C:/Users/arsyh/Desktop/cefeo/build",
+  "command": "C:\\msys64\\ucrt64\\bin\\c++.exe -IC:/Users/arsyh/Desktop/cefeo/core -IC:/Users/arsyh/Desktop/cefeo/lib/imgui -IC:/Users/arsyh/Desktop/cefeo/lib/imgui/backends -o CMakeFiles\\cefeo_win.dir\\platform\\windows\\main.cpp.obj -c C:\\Users\\arsyh\\Desktop\\cefeo\\platform\\windows\\main.cpp",
+  "file": "C:/Users/arsyh/Desktop/cefeo/platform/windows/main.cpp",
+  "output": "C:/Users/arsyh/Desktop/cefeo/build/CMakeFiles/cefeo_win.dir/platform/windows/main.cpp.obj"
+}
+]

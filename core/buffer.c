@@ -1,21 +1,19 @@
 // buffer.c
 
-
 #include "buffer.h"
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
 
 
-
 // Инициализация буфера
 void initBuffer(Buffer* buffer) {
-    buffer->data = (char*)malloc(1024); // remade to 8kb
+    buffer->data = (char*)malloc(8192); // remade to 8kb
     if (buffer->data == NULL) {
         printf("Memory allocation failed!\n");
         return;
     }
-    memset(buffer->data, 0, 1024); // also remade to 8kb
+    memset(buffer->data, 0, 8192); // also remade to 8kb
     buffer->size = 0;
     buffer->data[0] = '\0';
 }
@@ -27,4 +25,3 @@ void freeBuffer(Buffer* buffer) {
         buffer->data = NULL;
     }
 }
-
